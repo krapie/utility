@@ -1,0 +1,12 @@
+{
+  "name": "Utility",
+  "short_name": "Utility",
+  "description": "General-purpose developer toolbox",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ]
+}
