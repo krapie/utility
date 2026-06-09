@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import IndexPage from './pages/IndexPage'
+import ToolPage from './pages/ToolPage'
 import HashGen from './components/HashGen'
 import Base64Tool from './components/Base64Tool'
 import RegexTester from './components/RegexTester'
@@ -7,38 +10,13 @@ import YamlJson from './components/YamlJson'
 import StringTransformer from './components/StringTransformer'
 import HarAnalyzer from './components/HarAnalyzer'
 
-type Tab = 'hash' | 'base64' | 'regex' | 'json' | 'yaml' | 'string' | 'har'
-
-function SunIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="12" r="4" />
-      <path strokeLinecap="round" d="M12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21M5.6 5.6l1.06 1.06M17.34 17.34l1.06 1.06M5.6 18.4l1.06-1.06M17.34 6.66l1.06-1.06" />
-    </svg>
-  )
-}
-
-function MoonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
-    </svg>
-  )
-}
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'hash',   label: 'Hash' },
-  { id: 'base64', label: 'Base64' },
-  { id: 'regex',  label: 'Regex' },
-  { id: 'json',   label: 'JSON' },
-  { id: 'yaml',   label: 'YAML' },
-  { id: 'string', label: 'String' },
-  { id: 'har',    label: 'HAR' },
-]
+type Theme = 'light' | 'dark'
+interface ThemeCtx { theme: Theme; toggle: () => void }
+export const ThemeContext = createContext<ThemeCtx>({ theme: 'light', toggle: () => {} })
+export const useTheme = () => useContext(ThemeContext)
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>('hash')
-  const [theme, setTheme] = useState<'light' | 'dark'>(
+  const [theme, setTheme] = useState<Theme>(
     () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   )
 
@@ -46,57 +24,51 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  const toggle = () => setTheme(t => t === 'light' ? 'dark' : 'light')
+
   return (
-    <div className="page-root">
-      <header className="kp-header">
-        <div className="brand">
-          <span className="pi-mark">π</span>
-          <span>Utility</span>
-        </div>
-        <div className="kp-header-right">
-          <a href="https://kevinprk.com" className="back-link">← kevinprk.com</a>
-          <button
-            className="theme-toggle"
-            onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}
-            aria-label="toggle theme"
-            title="toggle theme"
-          >
-            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-          </button>
-        </div>
-      </header>
-
-      <main className="kp-main">
-        <h1>Utility</h1>
-        <p className="subtitle">General-purpose developer toolbox. Everything runs in your browser — nothing is sent to any server.</p>
-
-        <div className="kp-tabs" role="tablist">
-          {TABS.map(t => (
-            <button
-              key={t.id}
-              role="tab"
-              aria-selected={tab === t.id}
-              className={'kp-tab' + (tab === t.id ? ' active' : '')}
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {tab === 'hash'   && <HashGen />}
-        {tab === 'base64' && <Base64Tool />}
-        {tab === 'regex'  && <RegexTester />}
-        {tab === 'json'   && <JsonPrettifier />}
-        {tab === 'yaml'   && <YamlJson />}
-        {tab === 'string' && <StringTransformer />}
-        {tab === 'har'    && <HarAnalyzer />}
-      </main>
-
-      <footer className="kp-footer">
-        <span>© {new Date().getFullYear()} kevin park</span>
-        <span className="pi">π</span>
-      </footer>
-    </div>
+    <ThemeContext.Provider value={{ theme, toggle }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/hash" element={
+            <ToolPage title="Hash Generator" subtitle="Compute MD5, SHA-1, SHA-256, and SHA-512 hashes entirely in your browser.">
+              <HashGen />
+            </ToolPage>
+          } />
+          <Route path="/base64" element={
+            <ToolPage title="Base64" subtitle="Encode and decode text, or convert any file to Base64 — all client-side.">
+              <Base64Tool />
+            </ToolPage>
+          } />
+          <Route path="/regex" element={
+            <ToolPage title="Regex Tester" subtitle="Live match highlighting with capture group inspection.">
+              <RegexTester />
+            </ToolPage>
+          } />
+          <Route path="/json" element={
+            <ToolPage title="JSON Prettifier" subtitle="Format, validate, and minify JSON with monochrome syntax highlighting.">
+              <JsonPrettifier />
+            </ToolPage>
+          } />
+          <Route path="/yaml" element={
+            <ToolPage title="YAML ↔ JSON" subtitle="Convert between YAML and JSON, bidirectionally.">
+              <YamlJson />
+            </ToolPage>
+          } />
+          <Route path="/string" element={
+            <ToolPage title="String Transformer" subtitle="Convert between camelCase, snake_case, kebab-case, PascalCase, and more.">
+              <StringTransformer />
+            </ToolPage>
+          } />
+          <Route path="/har" element={
+            <ToolPage title="HAR Analyzer" subtitle="Inspect Chrome or Firefox network archives — waterfall, timings, headers.">
+              <HarAnalyzer />
+            </ToolPage>
+          } />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeContext.Provider>
   )
 }
