@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import IndexPage from './pages/IndexPage'
+import ToolRail from './components/ToolRail'
 import ToolPage from './pages/ToolPage'
 import HashGen from './components/HashGen'
 import Base64Tool from './components/Base64Tool'
@@ -29,45 +29,50 @@ export default function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggle }}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<IndexPage />} />
-          <Route path="/hash" element={
-            <ToolPage title="Hash Generator" subtitle="Compute MD5, SHA-1, SHA-256, and SHA-512 hashes entirely in your browser.">
-              <HashGen />
-            </ToolPage>
-          } />
-          <Route path="/base64" element={
-            <ToolPage title="Base64" subtitle="Encode and decode text, or convert any file to Base64 — all client-side.">
-              <Base64Tool />
-            </ToolPage>
-          } />
-          <Route path="/regex" element={
-            <ToolPage title="Regex Tester" subtitle="Live match highlighting with capture group inspection.">
-              <RegexTester />
-            </ToolPage>
-          } />
-          <Route path="/json" element={
-            <ToolPage title="JSON Prettifier" subtitle="Format, validate, and minify JSON with monochrome syntax highlighting.">
-              <JsonPrettifier />
-            </ToolPage>
-          } />
-          <Route path="/yaml" element={
-            <ToolPage title="YAML ↔ JSON" subtitle="Convert between YAML and JSON, bidirectionally.">
-              <YamlJson />
-            </ToolPage>
-          } />
-          <Route path="/string" element={
-            <ToolPage title="String Transformer" subtitle="Convert between camelCase, snake_case, kebab-case, PascalCase, and more.">
-              <StringTransformer />
-            </ToolPage>
-          } />
-          <Route path="/har" element={
-            <ToolPage title="HAR Analyzer" subtitle="Inspect Chrome or Firefox network archives — waterfall, timings, headers.">
-              <HarAnalyzer />
-            </ToolPage>
-          } />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <div className="kp-shell">
+          <ToolRail />
+          <div className="kp-shell-main">
+            <Routes>
+              <Route path="/" element={<Navigate to="/hash" replace />} />
+              <Route path="/hash" element={
+                <ToolPage title="Hash Generator" subtitle="Compute MD5, SHA-1, SHA-256, and SHA-512 hashes entirely in your browser.">
+                  <HashGen />
+                </ToolPage>
+              } />
+              <Route path="/base64" element={
+                <ToolPage title="Base64" subtitle="Encode and decode text, or convert any file to Base64 — all client-side.">
+                  <Base64Tool />
+                </ToolPage>
+              } />
+              <Route path="/regex" element={
+                <ToolPage title="Regex Tester" subtitle="Live match highlighting with capture group inspection.">
+                  <RegexTester />
+                </ToolPage>
+              } />
+              <Route path="/json" element={
+                <ToolPage title="JSON Prettifier" subtitle="Format, validate, and minify JSON with monochrome syntax highlighting.">
+                  <JsonPrettifier />
+                </ToolPage>
+              } />
+              <Route path="/yaml" element={
+                <ToolPage title="YAML ↔ JSON" subtitle="Convert between YAML and JSON, bidirectionally.">
+                  <YamlJson />
+                </ToolPage>
+              } />
+              <Route path="/string" element={
+                <ToolPage title="String Transformer" subtitle="Convert between camelCase, snake_case, kebab-case, PascalCase, and more.">
+                  <StringTransformer />
+                </ToolPage>
+              } />
+              <Route path="/har" element={
+                <ToolPage title="HAR Analyzer" subtitle="Inspect Chrome or Firefox network archives — waterfall, timings, headers.">
+                  <HarAnalyzer />
+                </ToolPage>
+              } />
+              <Route path="*" element={<Navigate to="/hash" replace />} />
+            </Routes>
+          </div>
+        </div>
       </BrowserRouter>
     </ThemeContext.Provider>
   )
