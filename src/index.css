@@ -406,6 +406,16 @@ button { font: inherit; cursor: pointer; background: none; border: none; color: 
   .kp-main {
     padding: var(--kp-space-5) var(--kp-page-pad-mobile) var(--kp-space-7);
   }
+  .kp-main h1 { font-size: var(--kp-text-xl); }
+
+  .kp-card { padding: var(--kp-space-4); }
+
+  /* Stack input rows vertically so inputs don't overflow */
+  .kp-input-row { flex-direction: column; }
+  .kp-input { min-width: 0; }
+
+  /* Tighten string result label column */
+  .str-result-row { grid-template-columns: 100px 1fr auto; }
 
   .kp-footer {
     padding: var(--kp-space-4) var(--kp-page-pad-mobile);
