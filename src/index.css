@@ -1041,3 +1041,69 @@ button { font: inherit; cursor: pointer; background: none; border: none; color: 
 .har-header-row:last-child { border-bottom: none; }
 .har-header-name { color: var(--kp-fg-3); flex-shrink: 0; min-width: 120px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
 .har-header-val { color: var(--kp-fg-1); word-break: break-all; }
+
+/* ── Cron Builder ───────────────────────────────────────────── */
+.cron-wrap { display: flex; flex-direction: column; gap: var(--kp-space-6); }
+.cron-input-row { display: flex; flex-direction: column; gap: var(--kp-space-2); }
+.cron-input {
+  font-family: var(--kp-font-mono); font-size: var(--kp-text-lg);
+  letter-spacing: 0.08em; color: var(--kp-fg);
+  background: var(--kp-bg-subtle); border: 1px solid var(--kp-border);
+  border-radius: var(--kp-radius-md); padding: var(--kp-space-3) var(--kp-space-4);
+  outline: none; width: 100%; max-width: 360px;
+  transition: border-color var(--kp-dur-fast);
+}
+.cron-input:focus { border-color: var(--kp-border-strong); }
+.cron-input--invalid { border-color: var(--kp-danger); }
+.cron-hint {
+  font-family: var(--kp-font-mono); font-size: var(--kp-text-xs);
+  color: var(--kp-fg-4); letter-spacing: 0.12em;
+}
+.cron-presets { display: flex; flex-wrap: wrap; gap: var(--kp-space-2); }
+.cron-preset {
+  font-family: var(--kp-font-sans); font-size: var(--kp-text-xs);
+  color: var(--kp-fg-2); background: none;
+  border: 1px solid var(--kp-border); border-radius: var(--kp-radius-full);
+  padding: var(--kp-space-1) var(--kp-space-3); cursor: pointer;
+  transition: border-color var(--kp-dur-fast), color var(--kp-dur-fast);
+}
+.cron-preset:hover { border-color: var(--kp-border-strong); color: var(--kp-fg); }
+.cron-preset--active { border-color: var(--kp-fg); color: var(--kp-fg); }
+.cron-fields { display: flex; gap: var(--kp-space-3); flex-wrap: wrap; }
+.cron-field {
+  flex: 1; min-width: 80px;
+  border: 1px solid var(--kp-border); border-radius: var(--kp-radius-md);
+  padding: var(--kp-space-3) var(--kp-space-4);
+}
+.cron-field--invalid { border-color: var(--kp-danger); }
+.cron-field-label {
+  font-size: var(--kp-text-xs); color: var(--kp-fg-4);
+  letter-spacing: var(--kp-tracking-wide); text-transform: uppercase;
+  margin-bottom: var(--kp-space-2);
+}
+.cron-field-val {
+  font-family: var(--kp-font-mono); font-size: var(--kp-text-md);
+  color: var(--kp-fg); margin-bottom: var(--kp-space-1);
+}
+.cron-field--invalid .cron-field-val { color: var(--kp-danger); }
+.cron-field-desc { font-size: var(--kp-text-xs); color: var(--kp-fg-3); }
+.cron-error { font-size: var(--kp-text-sm); color: var(--kp-danger); }
+.cron-runs { display: flex; flex-direction: column; gap: var(--kp-space-3); }
+.cron-runs-label {
+  font-size: var(--kp-text-xs); color: var(--kp-fg-4);
+  letter-spacing: var(--kp-tracking-wide); text-transform: uppercase;
+}
+.cron-runs-list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: var(--kp-space-2);
+}
+.cron-runs-list li {
+  font-family: var(--kp-font-mono); font-size: var(--kp-text-sm);
+  color: var(--kp-fg-2); display: flex; align-items: center; gap: var(--kp-space-3);
+}
+.cron-runs-list li::before {
+  content: counter(list-item);
+  counter-increment: list-item;
+  font-size: var(--kp-text-xs); color: var(--kp-fg-4); width: 16px;
+}
+.cron-runs-list { counter-reset: list-item; }

@@ -9,6 +9,7 @@ import JsonPrettifier from './components/JsonPrettifier'
 import YamlJson from './components/YamlJson'
 import StringTransformer from './components/StringTransformer'
 import HarAnalyzer from './components/HarAnalyzer'
+import CronBuilder from './components/CronBuilder'
 
 type Theme = 'light' | 'dark'
 interface ThemeCtx { theme: Theme; toggle: () => void }
@@ -67,6 +68,11 @@ export default function App() {
               <Route path="/har" element={
                 <ToolPage title="HAR Analyzer" subtitle="Inspect Chrome or Firefox network archives — waterfall, timings, headers.">
                   <HarAnalyzer />
+                </ToolPage>
+              } />
+              <Route path="/cron" element={
+                <ToolPage title="Cron Builder" subtitle="Build, validate, and explain cron expressions. See the next scheduled runs.">
+                  <CronBuilder />
                 </ToolPage>
               } />
               <Route path="*" element={<Navigate to="/hash" replace />} />
